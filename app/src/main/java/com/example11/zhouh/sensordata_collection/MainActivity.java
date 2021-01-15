@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -57,17 +58,24 @@ public class MainActivity extends WearableActivity {
             @Override
             public void onClick(View view) {
                 if (sensorData == null) {
-                    Log.d(tag, "null true");
                     sensorData = new SensorData(MainActivity.this);
                     if (sensorData.recording == false) {
                         sensorData.F_init();
-                        Log.d(tag, "Finit");
+                        //Log.d(tag, "Finit");
+                        Toast.makeText(getApplicationContext(), "Start recording",
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
                 else{
                     if (sensorData.recording == false) {
                         sensorData.RE_init();
                         Log.d(tag, "REinit");
+                        Toast.makeText(getApplicationContext(), "Start recording",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Already Startted.",
+                                Toast.LENGTH_SHORT).show();
                     }
                     }
                 }
@@ -75,11 +83,19 @@ public class MainActivity extends WearableActivity {
         b_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sensorData.recording == true) {
-                    sensorData.saveData();
+                if (sensorData == null) {
+                    Toast.makeText(getApplicationContext(), "Hassn't Startted",
+                            Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    Log.d(tag, "placeholder");
+                else {
+                    if (sensorData.recording == true) {
+                        sensorData.saveData();
+                        Toast.makeText(getApplicationContext(), "Stop recording",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Hassn't Startted",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -93,7 +109,6 @@ public class MainActivity extends WearableActivity {
                     finish();
             }
         });
-
         // Enables Always-on
         setAmbientEnabled();
     }
