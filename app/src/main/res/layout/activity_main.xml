@@ -4,53 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_grey"
+    android:background="@color/yellow_light"
     android:padding="@dimen/box_inset_layout_padding"
     tools:context=".MainActivity"
     tools:deviceIds="wear">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/inner_frame_layout_padding"
-        app:boxedEdges="all">
-
-        <Button
-            android:id="@+id/b_quit"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="11dp"
-            android:text="quit" />
+        android:layout_height="wrap_content"
+        android:padding="@dimen/inner_frame_layout_padding" >
 
         <Button
             android:id="@+id/b_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="37dp"
+            android:layout_width="60dp"
+            android:layout_height="55dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="2dp"
-            android:layout_marginBottom="55dp"
-            android:text="stop" />
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="99dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blue_light"
+            android:text="STOP" />
 
         <Button
             android:id="@+id/b_start"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_width="60dp"
+            android:layout_height="55dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/blue_light"
             android:text="START" />
-
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+    <android.support.wear.widget.WearableRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/box_inset_layout_padding"
+        >
+    </android.support.wear.widget.WearableRecyclerView>
 
 </android.support.wear.widget.BoxInsetLayout>
