@@ -10,6 +10,5 @@ public class Global {
     static Queue<String> q;
     static ReentrantLock lock;
     static String TAG = "SensorData_Collection";
-
 }
 */

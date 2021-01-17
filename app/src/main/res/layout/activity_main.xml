@@ -18,7 +18,7 @@
         <Button
             android:id="@+id/b_stop"
             android:layout_width="60dp"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="99dp"
@@ -29,7 +29,7 @@
         <Button
             android:id="@+id/b_start"
             android:layout_width="60dp"
-            android:layout_height="55dp"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="35dp"
@@ -44,6 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/box_inset_layout_padding"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
         >
     </android.support.wear.widget.WearableRecyclerView>
 

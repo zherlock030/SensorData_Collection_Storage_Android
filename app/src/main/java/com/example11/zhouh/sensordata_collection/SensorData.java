@@ -5,7 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -21,7 +20,7 @@ public class SensorData {
     private String saveDir;
     public SensorManager sm;
     public Sensor acc, mag, gra, gyro, linacc;
-    public boolean recording = false, value = false;
+    public boolean recording = false, value = false,FileExist = true;
     private int index;
     private double[] std;
     private File file;
@@ -41,22 +40,34 @@ public class SensorData {
         //mag = sm.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }
 
-    public void F_init() {
-        unregister();
-        saveDir = Environment.getExternalStorageDirectory().toString() + "/SensorData_Collection_Storage/ZH_UP/";
+    public void F_init(String path) {
+        saveDir = path;
         Log.d(TAG, saveDir);
+        index = 0;
+        while(FileExist){
+            index += 1;
+            File destFile = new File(saveDir + String.valueOf(index) + ".txt");
+            if (!destFile.exists())
+                FileExist = false;
+        }
         register();
         recording = true;
         value = true;
     }
 
-    public void RE_init() {
-        q.clear();
+    public void RE_init(String path) {
+        saveDir = path;
+        index = 0;FileExist = true;
+        while(FileExist){
+            index += 1;
+            File destFile = new File(saveDir + String.valueOf(index) + ".txt");
+            if (!destFile.exists())
+                FileExist = false;
+        }
         recording = true;
     }
 
     private void init() {
-        index = 0;
         if (std == null)
             std = new double[3];
         Arrays.fill(std, 0);
@@ -93,7 +104,6 @@ public class SensorData {
             }
             fileWriter.close();
             Log.d(TAG, "Sensor" + index + ".txt " + "file saved.");
-            index++;
         } catch (IOException e) {
             e.printStackTrace();
         }

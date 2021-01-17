@@ -32,8 +32,9 @@ public class MainActivity extends WearableActivity {
     private static int REQUEST_CODE = 1;
     public SensorData sensorData;
     private String tag = "MainActivity";
+    public String path;
     private Button b_start, b_stop;
-    private int UserName=100, GestureType=100, UnexpectedMovement=100;
+    private int UserName=100, GestureType=100, UnexpectedMovement=100, DEFAULT=100;
     public static final String[] UserList = {
             "ZhouH", "ZengSY", "LinYX","ZhangWZ"
     };
@@ -61,23 +62,10 @@ public class MainActivity extends WearableActivity {
         mRecordAdapter = new RecordAdapter();
         mRecyclerView.setAdapter(mRecordAdapter);
 
-        File destDir = new File(Environment.getExternalStorageDirectory().toString() + "/SensorData_Collection_Storage");
-        Log.d(tag, Environment.getExternalStorageDirectory().toString() + "/SensorData_Collection_Storage");
-        if (!destDir.exists()) {
-            Log.d(tag, "not exist");
-            if (destDir.mkdirs()) {
-                Log.d(tag, "sensor folder created");
-            }
+        while (UserName != DEFAULT && GestureType != DEFAULT && UnexpectedMovement != DEFAULT){
+            Log.d(tag, "Please choose ur profile");
         }
 
-        for (int i = 0; i < 1; ++i) {
-            File subDir = new File(Environment.getExternalStorageDirectory().toString() + "/SensorData_Collection_Storage/ZH_UP/");
-            if (!subDir.exists()) {
-                if (subDir.mkdirs()) {
-                    Log.d(tag, "subdir " + i + " created");
-                }
-            }
-        }
         mTextView = (TextView) findViewById(R.id.text);
         b_start = (Button) findViewById(R.id.b_start);
         b_stop = (Button) findViewById(R.id.b_stop);
@@ -85,24 +73,32 @@ public class MainActivity extends WearableActivity {
         b_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sensorData == null) {
-                    sensorData = new SensorData(MainActivity.this);
-                    if (sensorData.recording == false) {
-                        sensorData.F_init();
-                        //Log.d(tag, "Finit");
-                        Toast.makeText(getApplicationContext(), "Start recording",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    if (sensorData.recording == false) {
-                        sensorData.RE_init();
-                        Log.d(tag, "REinit");
-                        Toast.makeText(getApplicationContext(), "Start recording",
-                                Toast.LENGTH_SHORT).show();
+                if (UserName != DEFAULT && GestureType != DEFAULT && UnexpectedMovement != DEFAULT) {
+                    buildDir();
+                    if (sensorData == null) {
+                        sensorData = new SensorData(MainActivity.this);
+                        if (sensorData.recording == false) {
+                            sensorData.F_init(path);
+                            //Log.d(tag, "Finit");
+                            Toast.makeText(getApplicationContext(), "Start recording",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Already Startted.",
-                                Toast.LENGTH_SHORT).show();
+                        if (sensorData.recording == false) {
+                            buildDir();
+                            sensorData.RE_init(path);
+                            Log.d(tag, "REinit");
+                            Toast.makeText(getApplicationContext(), "Start recording",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Already Startted.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Please choose profile first",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -126,6 +122,18 @@ public class MainActivity extends WearableActivity {
         });
         // Enables Always-on
         setAmbientEnabled();
+    }
+    //根据用户名等建立文件夹
+    private void buildDir(){
+        path = Environment.getExternalStorageDirectory().toString() + "/SensorData_Collection_Storage/"+ UserList[UserName] + "/" + UnexpectedList[UnexpectedMovement] + "/" + GestureList[GestureType] + "/";
+        File destDir = new File(path);
+        Log.d(tag, "folder is "+path);
+        if (!destDir.exists()) {
+            //Log.d(tag, "not exist");
+            if (destDir.mkdirs()) {
+                Log.d(tag, "folder created");
+            }
+        }
     }
 
     @Override
@@ -170,7 +178,7 @@ public class MainActivity extends WearableActivity {
                             UserName = position;
                         }
                         bindItem(position);
-                        //当一个被选中之后，立刻刷新其附近的，避免冲突，结果有问题
+                        // TODO 当一个被选中之后，立刻刷新其附近的，避免冲突，结果有问题
 //                        for(int i = position-2; i < position + 2; i++) {
 //                            if (i > 0 && i < UnexpectedMovement + UserList.length + GestureList.length){
 //                                bindItem(i);
@@ -207,7 +215,7 @@ public class MainActivity extends WearableActivity {
         //判断该position是否对应于一个已经被打勾的类别，
         //判断position属于哪个类别（user,gesture,unexpect)并取得对应字符串
         private void bindItem(int position) {
-            Log.d(tag, "bindItem: " + position);
+            //Log.d(tag, "bindItem: " + position);
             checkBox.setClickable(false);
             if (position == UserName || position == GestureType + UserList.length || position == UnexpectedMovement + UserList.length + GestureList.length)
                 checkBox.setChecked(true);

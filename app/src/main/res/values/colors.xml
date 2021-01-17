@@ -4,5 +4,6 @@
 <color name="whitee">#ffffff</color><!--白色 -->
 <color name="yellow_light">#ffffcc</color><!--浅黄色 -->
     <color name="blue_light">#66ccff</color><!--浅蓝色 -->
+    <color name="yellow">#ffff00</color><!--色 -->
 
 </resources>
